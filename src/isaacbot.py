@@ -12,7 +12,7 @@ load_dotenv(dotenv_path = '.env')
 TOKEN = os.getenv('TOKEN')
 
 if not TOKEN:
-	TOKEN = input('Please enter a valid Telegram Bot Token: ')
+	TOKEN = input('\nPlease enter a valid Telegram Bot Token: ')
 
 bot = telebot.TeleBot(TOKEN)
 controller = Controller()
