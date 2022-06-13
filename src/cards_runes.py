@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from difflib import SequenceMatcher
+from function import remove_dlc
 
 # Cards and Runes class
 class CardRune():
@@ -21,7 +22,7 @@ class CardRune():
 
 	def check_card_rune(self, exact):
 		cr_name = self.__name
-		cards_and_runes = [cr.replace('\n', '') for cr in CardRune.get_list_cards_runes()]
+		cards_and_runes = [remove_dlc(cr.replace('\n', '')) for cr in CardRune.get_list_cards_runes()]
 		if cr_name in cards_and_runes:
 			return cr_name
 		if exact:
@@ -32,6 +33,8 @@ class CardRune():
 		matches_contained = [cr for cr in cards_and_runes if cr_name.lower() in cr.lower()]
 		if len(matches_fine) > 0 or len(matches_contained) > 0:
 			matches = [match[1] for match in matches_fine] + matches_contained
+			if matches_contained[0].lower() == cr_name.lower():
+				return matches_contained[0]
 			return list(dict.fromkeys(matches))
 		else:
 			return False
