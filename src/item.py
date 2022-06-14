@@ -143,6 +143,8 @@ class Item():
 		for item in items_tr_tag:
 			link_tag = item.find('a')
 			items.append(link_tag.get_text())
+		# Exception: Tonsil
+		items.remove('Tonsil')
 		return items
 
 	def check_item(self, exact):
