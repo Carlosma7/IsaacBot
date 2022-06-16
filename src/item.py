@@ -74,7 +74,10 @@ class Item():
 		recharge_tag = content.find('div', attrs={'data-source': 'recharge'})
 		if recharge_tag:
 			recharge_text = recharge_tag.find_all('img')[-1].parent.get_text()
-			item_dict['recharge'] = int(list(filter(str.isdigit, recharge_text))[0])
+			try:
+				item_dict['recharge'] = int(list(filter(str.isdigit, recharge_text))[0])
+			except:
+				item_dict['recharge'] = recharge_text
 
 		# quality
 		item_dict['quality'] = int(content.find('div', attrs={'data-source': 'quality'}).parent.find('b').get_text())

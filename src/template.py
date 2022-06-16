@@ -18,7 +18,10 @@ def get_item_description(item):
 	# Type
 	item_values.append("{} item.".format(item.get('type').capitalize()))
 	if item.get('recharge'):
-		item_values.append("*Recharge time*\n{}".format("\U0001f50b"*item.get('recharge')))
+		if type(item.get('recharge')) == int:
+			item_values.append("*Recharge time*\n{}".format("\U0001f50b"*item.get('recharge')))
+		else:
+			item_values.append("*Recharge time*\n{}".format(item.get('recharge')[1:].capitalize()))
 	# Quality
 	item_values.append("*Quality*\n\u26AB\u26AB\u26AB\u26AB".replace("\u26AB", "\u2B50", item.get('quality')))
 	# Grid
