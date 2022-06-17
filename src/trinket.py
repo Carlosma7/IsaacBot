@@ -128,7 +128,11 @@ class Trinket():
 		return trinkets
 
 	def check_trinket(self, exact):
-		trinket_name = self.__name.title()
+		if exact:
+			trinket_name = self.__name
+		else:
+			trinket_name = self.__name.title()
+		
 		trinkets = Trinket.get_list_trinkets()
 		if trinket_name in trinkets:
 			return trinket_name
@@ -140,6 +144,8 @@ class Trinket():
 		matches_contained = [tr for tr in trinkets if trinket_name.lower() in tr.lower()]
 		if len(matches_fine) > 0 or len(matches_contained) > 0:
 			matches = [match[1] for match in matches_fine] + matches_contained
+			if matches_contained and matches_contained[0].lower() == trinket_name.lower():
+				return matches_contained[0]
 			return list(dict.fromkeys(matches))
 		else:
 			return False

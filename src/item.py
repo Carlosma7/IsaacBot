@@ -151,7 +151,11 @@ class Item():
 		return items
 
 	def check_item(self, exact):
-		item_name = self.__name.title()
+		if exact:
+			item_name = self.__name
+		else:
+			item_name = self.__name.title()
+
 		items = Item.get_list_items()
 		if item_name in items:
 			return item_name
@@ -163,6 +167,8 @@ class Item():
 		matches_contained = [it for it in items if item_name.lower() in it.lower()]
 		if len(matches_fine) > 0 or len(matches_contained) > 0:
 			matches = [match[1] for match in matches_fine] + matches_contained
+			if matches_contained and matches_contained[0].lower() == item_name.lower():
+				return matches_contained[0]
 			return list(dict.fromkeys(matches))
 		else:
 			return False

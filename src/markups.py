@@ -16,10 +16,10 @@ def markup_item_trinket(elem, elem_type):
 	# Keyboard
 	markup = telebot.types.InlineKeyboardMarkup(row_width = 2)
 	# Buttons
-	bt1 = telebot.types.InlineKeyboardButton('Effects', callback_data='Effects/{}/{}'.format(elem_type, elem))
-	bt2 = telebot.types.InlineKeyboardButton('Notes', callback_data='Notes/{}/{}'.format(elem_type, elem))
-	bt3 = telebot.types.InlineKeyboardButton('Synergies', callback_data='Synergies/{}/{}'.format(elem_type, elem))
-	bt4 = telebot.types.InlineKeyboardButton('Interactions', callback_data='Interactions/{}/{}'.format(elem_type, elem))
+	bt1 = telebot.types.InlineKeyboardButton('Effects', callback_data='Effects_{}_{}'.format(elem_type, elem))
+	bt2 = telebot.types.InlineKeyboardButton('Notes', callback_data='Notes_{}_{}'.format(elem_type, elem))
+	bt3 = telebot.types.InlineKeyboardButton('Synergies', callback_data='Synergies_{}_{}'.format(elem_type, elem))
+	bt4 = telebot.types.InlineKeyboardButton('Interactions', callback_data='Interactions_{}_{}'.format(elem_type, elem))
 
 	markup.add(bt1, bt2, bt3, bt4)
 

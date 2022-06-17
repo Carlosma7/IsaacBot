@@ -33,7 +33,7 @@ class CardRune():
 		matches_contained = [cr for cr in cards_and_runes if cr_name.lower() in cr.lower()]
 		if len(matches_fine) > 0 or len(matches_contained) > 0:
 			matches = [match[1] for match in matches_fine] + matches_contained
-			if matches_contained[0].lower() == cr_name.lower():
+			if matches_contained and matches_contained[0].lower() == cr_name.lower():
 				return matches_contained[0]
 			return list(dict.fromkeys(matches))
 		else:

@@ -41,13 +41,13 @@ def query(message):
 	else:
 		bot.send_message(message.chat.id, '"{}" was not found, but here are some similar possibilities.'.format(message.text), reply_markup=markup_similar(result))
 
-@bot.callback_query_handler(lambda call: '/' in call.data)
+@bot.callback_query_handler(lambda call: '_' in call.data)
 def query_content(call):
 	result = controller.get_element_section(call.data, True)
 	
 	bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
-@bot.callback_query_handler(lambda call: '/' not in call.data)
+@bot.callback_query_handler(lambda call: '_' not in call.data)
 def query_similar(call):
 	result, res_type = controller.search_element(call.data, True)
 	bot.delete_message(call.message.chat.id, call.message.id)

@@ -26,14 +26,14 @@ class Controller():
 
 
 	def get_element_section(self, query, exact):
-		section, elem_type, elem = query.split('/')
+		section, elem_type, elem = query.split('_')
 
 		# Get section from item
 		if elem_type == 'Item':
 			item = Item(elem)
 			result_item, state = item.get_section(section, exact)
 			if section == 'Effects' and not result_item:
-				result_item, state = item.get_section('Effect')
+				result_item, state = item.get_section('Effect', exact)
 			if not result_item:
 				return "No information was found for section *{}*.".format(section)
 			return result_item
@@ -43,7 +43,7 @@ class Controller():
 			trinket = Trinket(elem)
 			result_trinket, state = trinket.get_section(section, exact)
 			if section == 'Effects' and not result_trinket:
-				result_item, state = item.get_section('Effect')
+				result_item, state = item.get_section('Effect', exact)
 			if not result_trinket:
 				return "No information was found for section *{}*.".format(section)
 			return result_trinket
