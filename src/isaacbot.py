@@ -49,8 +49,12 @@ def query_content(call):
 
 @bot.callback_query_handler(lambda call: '_' not in call.data)
 def query_similar(call):
-	result, res_type = controller.search_element(call.data, True)
-	bot.delete_message(call.message.chat.id, call.message.id)
-	bot.send_photo(call.message.chat.id, photo=result['image'], caption=get_element_description(result, res_type), parse_mode="Markdown", reply_markup=markup_content(call.data, res_type))
+	# Exception Options? item is not processable
+	if call.data == 'Options?':
+		bot.send_message(call.message.chat.id, 'Since we cannot process this item, here is the direct link to [Options?](https://bindingofisaacrebirth.fandom.com/wiki/Options%3F)', parse_mode="Markdown")
+	else:
+		result, res_type = controller.search_element(call.data, True)
+		bot.delete_message(call.message.chat.id, call.message.id)
+		bot.send_photo(call.message.chat.id, photo=result['image'], caption=get_element_description(result, res_type), parse_mode="Markdown", reply_markup=markup_content(call.data, res_type))
 
 bot.polling()

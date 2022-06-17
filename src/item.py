@@ -178,6 +178,10 @@ class Item():
 		if items:
 			if type(items) == list:
 				return items, False
+				
+			# Exception Options? item is not processable
+			if items == "Options?":
+				return ["Options?"], False
 		else:
 			return [], False
 		
