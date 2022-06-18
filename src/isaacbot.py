@@ -33,6 +33,10 @@ def spin(message):
 def spin(message):
 	bot.send_message(message.chat.id, new_challenge(), parse_mode="Markdown")
 
+@bot.message_handler(commands=['curses'])
+def curses(message):
+	bot.send_message(message.chat.id, controller.get_curses(), parse_mode="Markdown")
+
 @bot.message_handler(func=lambda message: True)
 def query(message):
 	result, res_type = controller.search_element(message.text)
