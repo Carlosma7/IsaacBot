@@ -1,6 +1,7 @@
 from item import Item
 from trinket import Trinket
 from cards_runes import CardRune
+from pills import Pill
 
 # Controller class
 class Controller():
@@ -22,7 +23,13 @@ class Controller():
 		result_card_rune, state = card_rune.get_description(exact)
 		if state:
 			return result_card_rune, 'CardRune'
-		return result_item + result_trinket + result_card_rune, 'Similar'
+
+		# Check if query is a pill
+		pill = Pill(query)
+		result_pill, state = pill.get_description(exact)
+		if state:
+			return result_pill, 'Pill'
+		return result_item + result_trinket + result_card_rune + result_pill, 'Similar'
 
 
 	def get_element_section(self, query, exact):

@@ -68,6 +68,18 @@ def get_card_rune_description(cr):
 
 	return "\n\n".join(card_rune_values)
 
+def get_pill_description(pill):
+	pill_values = []
+
+	# Name
+	pill_values.append("*{}*".format(pill.get('name').upper()))
+	# Effect
+	pill_values.append("*Effect*: {}".format(pill.get('effect')))
+	# Horse effect
+	pill_values.append("*Horse effect*: {}".format(pill.get('horse')))
+
+	return "\n\n".join(pill_values)
+
 def get_element_description(elem, elem_type):
 	# Item type
 	if elem_type == 'Item':
@@ -76,3 +88,5 @@ def get_element_description(elem, elem_type):
 		return get_trinket_description(elem)
 	elif elem_type == 'CardRune':
 		return get_card_rune_description(elem)
+	elif elem_type == 'Pill':
+		return get_pill_description(elem)

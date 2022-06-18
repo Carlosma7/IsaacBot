@@ -47,7 +47,6 @@ class CardRune():
 		else:
 			return [], False
 		
-		cr_code = "_".join(cards_and_runes.split())
 		url = "https://bindingofisaacrebirth.fandom.com/wiki/Cards_and_Runes"
 		respuesta = requests.get(url)
 		contenido = BeautifulSoup(respuesta.text, 'lxml')
