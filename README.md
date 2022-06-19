@@ -1,3 +1,4 @@
+
 <h1 align="center">IsaacBot</h1>
 <p align="center"><img src="https://github.com/Carlosma7/IsaacBot/blob/main/img/isaac_logo.jpeg?raw=true"/></p> 
 
@@ -58,6 +59,12 @@ There are three different commands in order to get some ideas for different game
 * **Spin**: Selects random run or challenge.
 <img src="https://github.com/Carlosma7/IsaacBot/blob/main/img/spin.png?raw=true" width="300">
 
+ ### :skull: Curses
+
+You can get all curses information with just ```/curses``` command:
+
+<img src="https://github.com/Carlosma7/IsaacBot/blob/main/img/curses.png?raw=true" width="300">
+ 
 ## Contributions
 
 Any feedback or issues found are welcome :thumbsup: to enhance the current state of the bot project. Also feel free to contribute or propose new features for any topic related with the bot, wiki or The Binding of Isaac game.
