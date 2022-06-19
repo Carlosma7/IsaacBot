@@ -129,6 +129,6 @@ class Transformation():
 			transformation_img = contenido.find('img', attrs={'alt': 'Isaac appearance'})
 			transformation_dict['image'] = transformation_img.get('data-src')
 		else:
-			transformation_dict['image'] = 'https://static.wikia.nocookie.net/bindingofisaacre_gamepedia/images/7/7c/Achievement_Horse_Pill_icon.png'
+			transformation_dict['image'] = 'https://static.wikia.nocookie.net/bindingofisaacre_gamepedia/images/9/98/Collectible_Leo_appearance.png'
 
 		return transformation_dict, True
