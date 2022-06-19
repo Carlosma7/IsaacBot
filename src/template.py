@@ -74,11 +74,28 @@ def get_pill_description(pill):
 	# Name
 	pill_values.append("*{}*".format(pill.get('name').upper()))
 	# Effect
-	pill_values.append("*Effect*: {}".format(pill.get('effect')))
+	pill_values.append("*Effect*\n{}".format(pill.get('effect')))
 	# Horse effect
-	pill_values.append("*Horse effect*: {}".format(pill.get('horse')))
+	pill_values.append("*Horse effect*\n{}".format(pill.get('horse')))
 
 	return "\n\n".join(pill_values)
+
+def get_transformation_description(transformation):
+	transformation_values = []
+
+	# Name
+	transformation_values.append("*{}*".format(transformation.get('name').upper()))
+	# Effect
+	transformation_values.append("*Effects*\n{}".format(transformation.get('effect')))
+	# Requirements
+	transformation_values.append("*Requirements*\n{}".format(transformation.get('requirements')))
+	# Items
+	items = ""
+	for item in transformation.get('items'):
+		items += "• {}\n".format(item)
+	transformation_values.append("*Possible Items*\n{}".format(items))
+
+	return "\n\n".join(transformation_values)
 
 def get_element_description(elem, elem_type):
 	# Item type
@@ -90,3 +107,5 @@ def get_element_description(elem, elem_type):
 		return get_card_rune_description(elem)
 	elif elem_type == 'Pill':
 		return get_pill_description(elem)
+	elif elem_type == 'Transformation':
+		return get_transformation_description(elem)

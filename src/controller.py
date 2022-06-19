@@ -2,6 +2,7 @@ from item import Item
 from trinket import Trinket
 from cards_runes import CardRune
 from pills import Pill
+from transformations import Transformation
 
 # Controller class
 class Controller():
@@ -29,7 +30,13 @@ class Controller():
 		result_pill, state = pill.get_description(exact)
 		if state:
 			return result_pill, 'Pill'
-		return result_item + result_trinket + result_card_rune + result_pill, 'Similar'
+
+		# Check if query is a transformation
+		transformation = Transformation(query)
+		result_transformation, state = transformation.get_description(exact)
+		if state:
+			return result_transformation, 'Transformation'
+		return result_item + result_trinket + result_card_rune + result_pill + result_transformation, 'Similar'
 
 
 	def get_element_section(self, query, exact):
