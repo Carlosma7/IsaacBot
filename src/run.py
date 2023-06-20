@@ -1,7 +1,20 @@
+"""
+This module provides functions for generating new runs, challenges, and spins in a game.
+
+Author: Carlos Morales Aguilera
+Date: 20-Jun-2023
+"""
+
 from random import randint, choice
 
 
 def new_run():
+    """
+    Generates a new run by randomly selecting a character and a mode.
+
+    Returns:
+        str: A formatted string representing the chosen character and mode.
+    """
     characters = [
         "Isaac",
         "Magdalene",
@@ -39,12 +52,18 @@ def new_run():
         "Tainted Jacob and Esau",
     ]
 
-    mode = ["Hard", "Creed"]
+    mode = ["Hard", "Greed", "Greedier"]
 
-    return "Character: *{}*\nMode: *{}*".format(choice(characters), choice(mode))
+    return f"Character: *{choice(characters)}*\nMode: *{choice(mode)}*"
 
 
 def new_challenge():
+    """
+    Generates a new challenge by randomly selecting a challenge from a predefined list.
+
+    Returns:
+        str: A formatted string representing the chosen challenge.
+    """
     challenges = [
         "1. Pitch Black",
         "2. High Brow",
@@ -93,10 +112,16 @@ def new_challenge():
         "45. DELETE THIS",
     ]
 
-    return "Challenge: *{}*".format(choice(challenges))
+    return f"Challenge: *{choice(challenges)}*"
 
 
 def new_spin():
+    """
+    Generates a new spin by randomly choosing between a new run and a new challenge.
+
+    Returns:
+        str: A formatted string representing the chosen spin.
+    """
     spin = randint(1, 2)
 
     if spin == 1:
