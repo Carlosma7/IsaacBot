@@ -37,7 +37,28 @@ class Markup:
 
         for rune in runes:
             button = telebot.types.InlineKeyboardButton(
-                rune, callback_data=f"\\rune {rune}")
+                rune, callback_data=f"/rune {rune}")
+            markup.add(button)
+
+        return markup
+
+    @staticmethod
+    def markup_pickups(pickups):
+        """
+        Create a markup for choosing pickups.
+
+        Args:
+            pickups (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for pickup in pickups:
+            button = telebot.types.InlineKeyboardButton(
+                pickup, callback_data=f"/pickup {pickup}")
             markup.add(button)
 
         return markup

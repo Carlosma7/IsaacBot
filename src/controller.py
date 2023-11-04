@@ -12,6 +12,7 @@ import pymongo
 from dotenv import load_dotenv
 
 from achievements import Achievement
+from pickups import Pickup
 from runes import Rune
 
 load_dotenv(dotenv_path='.env')
@@ -55,6 +56,32 @@ class Controller:
 
         return "Achievement ID is not valid, achievement ID must be between " \
                "1 and 637."
+
+    def get_list_pickups(self):
+        """
+        Get a list of available pickups from the database.
+
+        Returns:
+            list: A list of pickup names from the database.
+        """
+        pickup = Pickup('LIST')
+        pickups = pickup.get_list_pickups(database)
+        return pickups
+
+    def get_pickup(self, name):
+        """
+        Get detailed information about a specific pickup.
+
+        Args:
+        name (str): The name of the pickup to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            pickup.
+        """
+        pickup = Pickup(name)
+        result = pickup.get_pickup(database)
+        return result
 
     def get_list_runes(self):
         """

@@ -66,6 +66,41 @@ def achievement(message):
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
 
 
+@bot.message_handler(commands=['pickups'])
+def pickups(message):
+    """
+    Handles the /pickups command and returns all available pickups in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/pickups':
+        # Get wrong command message
+        reply = controller.get_reply("/pickups", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_pickups()
+        header = controller.get_reply("/pickups", "header")
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown", reply_markup=markup.markup_pickups(reply))
+
+
+@bot.callback_query_handler(lambda call: '/pickup' in call.data)
+def pickup_content(call):
+    """
+    Handles callback queries for retrieving specific content from a pickup.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.get_pickup(call.data.replace('/pickup ', ''))
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
 @bot.message_handler(commands=['runes'])
 def runes(message):
     """
@@ -86,7 +121,7 @@ def runes(message):
             parse_mode="Markdown", reply_markup=markup.markup_runes(reply))
 
 
-@bot.callback_query_handler(lambda call: '\\rune' in call.data)
+@bot.callback_query_handler(lambda call: '/rune' in call.data)
 def rune_content(call):
     """
     Handles callback queries for retrieving specific content from a rune.
@@ -95,7 +130,7 @@ def rune_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_rune(call.data.replace('\\rune ', ''))
+    result = controller.get_rune(call.data.replace('/rune ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
