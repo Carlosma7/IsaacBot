@@ -12,6 +12,7 @@ import pymongo
 from dotenv import load_dotenv
 
 from achievements import Achievement
+from runes import Rune
 
 load_dotenv(dotenv_path='.env')
 
@@ -54,3 +55,47 @@ class Controller:
 
         return "Achievement ID is not valid, achievement ID must be between " \
                "1 and 637."
+
+    def get_list_runes(self):
+        """
+        Get a list of available runes from the database.
+
+        Returns:
+            list: A list of rune names from the database.
+        """
+        rune = Rune('LIST')
+        runes = rune.get_list_runes(database)
+        return runes
+
+    def get_rune(self, name):
+        """
+        Get detailed information about a specific rune.
+
+        Args:
+        name (str): The name of the rune to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified rune.
+        """
+        rune = Rune(name)
+        result = rune.get_rune(database)
+        return result
+
+    def get_reply(self, command, reply_type):
+        """
+        Get a reply message based on a command and reply type.
+
+        Args:
+        command (str): The command to which the reply is associated.
+        reply_type (str): The type of the reply (e.g., 'wrong_command',
+        'header').
+
+        Returns:
+            str: The reply message associated with the given command and reply
+            type.
+        """
+        reply = database.Replies.find_one({
+            "command": command,
+            "type": reply_type,
+            })
+        return reply.get('message').encode('utf-8').decode('unicode_escape')

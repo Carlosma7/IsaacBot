@@ -17,6 +17,7 @@ import telebot
 from dotenv import load_dotenv
 
 from controller import Controller
+from markups import *
 
 load_dotenv(dotenv_path='.env')
 
@@ -56,12 +57,41 @@ def achievement(message):
     """
     pattern = r"/achievement (\d+)"
     if not re.match(pattern, message.text) or len(message.text.split()) != 2:
-        reply = "*Wrong command*.\nTo search an achievement please follow " \
-                "the format:\n_\\achievement <id>_."
+        # Get wrong command message
+        reply = controller.get_reply("/achievement", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
         reply = controller.get_achievement(message.text.split()[1])
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+
+@bot.message_handler(commands=['runes'])
+def runes(message):
+    """
+    Handles the /runes command and returns all available runes in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/runes':
+        # Get wrong command message
+        reply = controller.get_reply("/runes", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_runes()
+        header = controller.get_reply("/runes", "header")
+        bot.send_message(message.chat.id, text=header, parse_mode="Markdown", reply_markup=markup_runes(reply))
+
+@bot.callback_query_handler(lambda call: '\\rune' in call.data)
+def rune_content(call):
+    """
+    Handles callback queries for retrieving specific content from a rune.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from Telegram.
+    """
+    result = controller.get_rune(call.data.replace('\\rune ', ''))
+
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
 bot.polling()
