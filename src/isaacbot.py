@@ -39,7 +39,7 @@ def start(message):
     Args:
         message (telebot.types.Message): The message object from Telegram.
     """
-    photo = ("https://media.vandal.net/master/3-2023/20233192354223_1.jpg")
+    photo = "https://media.vandal.net/master/3-2023/20233192354223_1.jpg"
     caption = "Hi! My name is Isaac! \n\nWelcome to The Binding of Isaac: " \
               "Rebirth unofficial bot."
     bot.send_photo(message.chat.id,

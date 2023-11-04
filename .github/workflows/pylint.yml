@@ -23,4 +23,6 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files 'src/*.py')
+    - name: Analysing the code with pep8
+      run: |
         pep8 $(git ls-files 'src/*.py')
