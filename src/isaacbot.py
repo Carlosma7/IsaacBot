@@ -1,27 +1,22 @@
 """
-This module provides a Telegram bot for The Binding of Isaac: Rebirth game. It interacts with
-users and retrieves information about game elements using the Controller class.
+This module provides a Telegram bot for The Binding of Isaac: Rebirth game. It
+interacts with users and retrieves information about game elements using the
+Controller class.
 
 Dependencies:
-    - controller: The Controller class for searching and retrieving game element information.
-    - template: Templates for generating messages and captions.
-    - markups: Markup templates for interactive buttons.
-    - run: Functions for generating random runs, spins, and challenges.
-    - telebot: The telebot library for Telegram bot functionality.
-    - dotenv: The dotenv library for loading environment variables.
+    - controller: The Controller class for searching and retrieving game
+    element information.
 
 Author: Carlos Morales Aguilera
-Date: 20-Jun-2023
+Date: 04-Nov-2023
 """
 
+import re
 import os
 import telebot
 from dotenv import load_dotenv
 
 from controller import Controller
-from template import get_element_description
-from markups import markup_content, markup_similar
-from run import new_run, new_challenge, new_spin
 
 load_dotenv(dotenv_path='.env')
 
@@ -42,118 +37,31 @@ def start(message):
     Args:
         message (telebot.types.Message): The message object from Telegram.
     """
-    photo = ("https://www.somosxbox.com/wp-content/uploads",
-             "/2021/11/The-Binding-of-Isaac-Repentance-scaled.jpg")
-    caption = ("Hi! My name is Isaac! \n\nWelcome to The ",
-               "Binding of Isaac: Rebirth unofficial bot.")
+    photo = ("https://media.vandal.net/master/3-2023/20233192354223_1.jpg")
+    caption = "Hi! My name is Isaac! \n\nWelcome to The Binding of Isaac: " \
+              "Rebirth unofficial bot."
     bot.send_photo(message.chat.id,
                    photo=photo,
                    caption=caption,
                    parse_mode="Markdown")
 
 
-@bot.message_handler(commands=['spin'])
-def spin(message):
+@bot.message_handler(commands=['achievement'])
+def achievement(message):
     """
-    Handles the /spin command and sends a random spin message.
+    Handles the /achievement command and checks the id indicated.
 
     Args:
         message (telebot.types.Message): The message object from Telegram.
     """
-    bot.send_message(message.chat.id, new_spin(), parse_mode="Markdown")
-
-
-@bot.message_handler(commands=['run'])
-def run(message):
-    """
-    Handles the /run command and sends a random run message.
-
-    Args:
-        message (telebot.types.Message): The message object from Telegram.
-    """
-    bot.send_message(message.chat.id, new_run(), parse_mode="Markdown")
-
-
-@bot.message_handler(commands=['challenge'])
-def challenge(message):
-    """
-    Handles the /challenge command and sends a random challenge message.
-
-    Args:
-        message (telebot.types.Message): The message object from Telegram.
-    """
-    bot.send_message(message.chat.id, new_challenge(), parse_mode="Markdown")
-
-
-@bot.message_handler(commands=['curses'])
-def curses(message):
-    """
-    Handles the /curses command and sends a message with the curses information.
-
-    Args:
-        message (telebot.types.Message): The message object from Telegram.
-    """
-    bot.send_message(message.chat.id,
-                     controller.get_curses(),
-                     parse_mode="Markdown")
-
-
-@bot.message_handler(func=lambda message: True)
-def query(message):
-    """
-    Handles user queries and sends information about game elements.
-
-    Args:
-        message (telebot.types.Message): The message object from Telegram.
-    """
-    result, res_type = controller.search_element(message.text)
-    if isinstance(result, dict):
-        bot.send_photo(message.chat.id,
-                       photo=result['image'],
-                       caption=get_element_description(result, res_type),
-                       parse_mode="Markdown",
-                       reply_markup=markup_content(message.text, res_type))
+    pattern = r"/achievement (\d+)"
+    if not re.match(pattern, message.text) or len(message.text.split()) != 2:
+        reply = "*Wrong command*.\nTo search an achievement please follow " \
+                "the format:\n_\\achievement <id>_."
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        bot.send_message(
-            message.chat.id,
-            f"\"{message.text}\" was not found, but here are some similar possibilities.",
-            reply_markup=markup_similar(result))
-
-
-@bot.callback_query_handler(lambda call: '_' in call.data)
-def query_content(call):
-    """
-    Handles callback queries for retrieving specific content sections of game elements.
-
-    Args:
-        call (telebot.types.CallbackQuery): The callback query object from Telegram.
-    """
-    result = controller.get_element_section(call.data, True)
-
-    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
-
-
-@bot.callback_query_handler(lambda call: '_' not in call.data)
-def query_similar(call):
-    """
-    Handles callback queries for retrieving information about similar game elements.
-
-    Args:
-        call (telebot.types.CallbackQuery): The callback query object from Telegram.
-    """
-    caption = (
-        "Since we cannot process this item, here is the direct link to ",
-        "[Options?](https://bindingofisaacrebirth.fandom.com/wiki/Options%3F)")
-    if call.data == 'Options?':
-        bot.send_message(call.message.chat.id, caption, parse_mode="Markdown")
-    else:
-        result, res_type = controller.search_element(call.data, True)
-        bot.delete_message(call.message.chat.id, call.message.id)
-        bot.send_photo(call.message.chat.id,
-                       photo=result['image'],
-                       caption=get_element_description(result, res_type),
-                       parse_mode="Markdown",
-                       reply_markup=markup_content(call.data, res_type))
+        reply = controller.get_achievement(message.text.split()[1])
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
 
 
 bot.polling()
