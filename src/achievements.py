@@ -2,7 +2,7 @@
 This file provides a class for handling achievements in the game.
 
 Author: Carlos Morales Aguilera
-Date: 3-Nov-2023
+Date: 03-Nov-2023
 """
 
 
@@ -11,9 +11,6 @@ class Achievement:
     Represents an achievement in the game.
 
     Attributes:
-        __name (str): The name of the achievement.
-        __description (str): The description message of the achievement.
-        __unlock (str): Unlock method for the achievement.
         __number (int): Number ID of the achievement.
     """
 
