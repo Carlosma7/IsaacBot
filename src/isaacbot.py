@@ -17,7 +17,7 @@ import telebot
 from dotenv import load_dotenv
 
 from controller import Controller
-from markups import *
+from markups import Markup
 
 load_dotenv(dotenv_path='.env')
 
@@ -28,6 +28,7 @@ if not TOKEN:
 
 bot = telebot.TeleBot(TOKEN)
 controller = Controller()
+markup = Markup()
 
 
 @bot.message_handler(commands=['start'])
@@ -64,6 +65,7 @@ def achievement(message):
         reply = controller.get_achievement(message.text.split()[1])
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
 
+
 @bot.message_handler(commands=['runes'])
 def runes(message):
     """
@@ -79,7 +81,10 @@ def runes(message):
     else:
         reply = controller.get_list_runes()
         header = controller.get_reply("/runes", "header")
-        bot.send_message(message.chat.id, text=header, parse_mode="Markdown", reply_markup=markup_runes(reply))
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown", reply_markup=markup.markup_runes(reply))
+
 
 @bot.callback_query_handler(lambda call: '\\rune' in call.data)
 def rune_content(call):
@@ -87,10 +92,12 @@ def rune_content(call):
     Handles callback queries for retrieving specific content from a rune.
 
     Args:
-        call (telebot.types.CallbackQuery): The callback query object from Telegram.
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
     """
     result = controller.get_rune(call.data.replace('\\rune ', ''))
 
+    bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
