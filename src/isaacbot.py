@@ -136,4 +136,41 @@ def rune_content(call):
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
+@bot.message_handler(commands=['soulstones'])
+def soulstones(message):
+    """
+    Handles the /soulstones command and returns all available soul stones
+    in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/soulstones':
+        # Get wrong command message
+        reply = controller.get_reply("/soulstones", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_soulstones()
+        header = controller.get_reply("/soulstones", "header")
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown",
+            reply_markup=markup.markup_soulstones(reply))
+
+
+@bot.callback_query_handler(lambda call: '/soulstone' in call.data)
+def soulstone_content(call):
+    """
+    Handles callback queries for retrieving specific content from a soul stone.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.get_soulstone(call.data.replace('/soulstone ', ''))
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
 bot.polling()

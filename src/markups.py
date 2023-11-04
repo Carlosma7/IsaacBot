@@ -62,3 +62,24 @@ class Markup:
             markup.add(button)
 
         return markup
+
+    @staticmethod
+    def markup_soulstones(soulstones):
+        """
+        Create a markup for choosing soul stones.
+
+        Args:
+            soulstones (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for soulstone in soulstones:
+            button = telebot.types.InlineKeyboardButton(
+                soulstone, callback_data=f"/soulstone {soulstone}")
+            markup.add(button)
+
+        return markup

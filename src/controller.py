@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 from achievements import Achievement
 from pickups import Pickup
 from runes import Rune
+from soulstones import SoulStone
 
 load_dotenv(dotenv_path='.env')
 
@@ -106,6 +107,32 @@ class Controller:
         """
         rune = Rune(name)
         result = rune.get_rune(database)
+        return result
+
+    def get_list_soulstones(self):
+        """
+        Get a list of available soul stones from the database.
+
+        Returns:
+            list: A list of soul stone names from the database.
+        """
+        soulstone = SoulStone('LIST')
+        soulstones = soulstone.get_list_soulstones(database)
+        return soulstones
+
+    def get_soulstone(self, name):
+        """
+        Get detailed information about a specific soul stone.
+
+        Args:
+        name (str): The name of the soul stone to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            soul stone.
+        """
+        soulstone = SoulStone(name)
+        result = soulstone.get_soulstone(database)
         return result
 
     def get_reply(self, command, reply_type):
