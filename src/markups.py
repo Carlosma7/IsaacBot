@@ -17,6 +17,7 @@ import telebot
 # just to pass pylint checks now
 # pylint: disable=R0903
 
+
 class Markup:
     """
     This class provides methods for creating markups using the Telebot library.
