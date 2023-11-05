@@ -22,6 +22,7 @@ from pickups import Pickup
 from pills import Pill
 from runes import Rune
 from soulstones import SoulStone
+from transformations import Transformation
 
 load_dotenv(dotenv_path='.env')
 
@@ -229,6 +230,32 @@ class Controller:
         """
         pill = Pill(name)
         result = pill.get_pill(database)
+        return result
+
+    def get_list_transformations(self):
+        """
+        Get a list of available transformations from the database.
+
+        Returns:
+            list: A list of transformation names from the database.
+        """
+        transformation = Transformation('LIST')
+        transformations = transformation.get_list_transformations(database)
+        return transformations
+
+    def get_transformation(self, name):
+        """
+        Get detailed information about a specific transformation.
+
+        Args:
+        name (str): The name of the transformation to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            transformation.
+        """
+        transformation = Transformation(name)
+        result = transformation.get_transformation(database)
         return result
 
     def get_reply(self, command, reply_type):

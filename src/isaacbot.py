@@ -302,4 +302,43 @@ def pill_content(call):
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
+@bot.message_handler(commands=['transformations'])
+def transformations(message):
+    """
+    Handles the /transformations command and returns all available
+    transformations in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/transformations':
+        # Get wrong command message
+        reply = controller.get_reply("/transformations", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_transformations()
+        header = controller.get_reply("/transformations", "header")
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown",
+            reply_markup=markup.markup_transformations(reply))
+
+
+@bot.callback_query_handler(lambda call: '/transformation' in call.data)
+def transformation_content(call):
+    """
+    Handles callback queries for retrieving specific content from a
+    transformation.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.get_transformation(
+        call.data.replace('/transformation ', ''))
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
 bot.polling()

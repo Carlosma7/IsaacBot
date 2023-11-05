@@ -167,3 +167,25 @@ class Markup:
             markup.add(button)
 
         return markup
+
+    @staticmethod
+    def markup_transformations(transformations):
+        """
+        Create a markup for choosing transformations.
+
+        Args:
+            transformations (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for transformation in transformations:
+            button = telebot.types.InlineKeyboardButton(
+                transformation,
+                callback_data=f"/transformation {transformation}")
+            markup.add(button)
+
+        return markup
