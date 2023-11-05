@@ -125,3 +125,24 @@ class Markup:
             markup.add(button)
 
         return markup
+
+    @staticmethod
+    def markup_curses(curses):
+        """
+        Create a markup for choosing curses.
+
+        Args:
+            curses (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for curse in curses:
+            button = telebot.types.InlineKeyboardButton(
+                curse, callback_data=f"/curse {curse}")
+            markup.add(button)
+
+        return markup

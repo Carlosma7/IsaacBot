@@ -7,12 +7,17 @@ Author: Carlos Morales Aguilera
 Date: 04-Nov-2023
 """
 
+# Disable order due to error with pylint, but the order will
+# still be respected.
+# pylint: disable=C0411
+
 import os
 import pymongo
 from dotenv import load_dotenv
 
 from achievements import Achievement
 from cards import Card
+from curses import Curse
 from pickups import Pickup
 from runes import Rune
 from soulstones import SoulStone
@@ -171,6 +176,32 @@ class Controller:
         """
         card = Card(name)
         result = card.get_card(database)
+        return result
+
+    def get_list_curses(self):
+        """
+        Get a list of available curses from the database.
+
+        Returns:
+            list: A list of curse names from the database.
+        """
+        curse = Curse('LIST')
+        curses = curse.get_list_curses(database)
+        return curses
+
+    def get_curse(self, name):
+        """
+        Get detailed information about a specific curse.
+
+        Args:
+        name (str): The name of the curse to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            curse.
+        """
+        curse = Curse(name)
+        result = curse.get_curse(database)
         return result
 
     def get_reply(self, command, reply_type):

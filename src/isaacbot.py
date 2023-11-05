@@ -228,4 +228,41 @@ def card_content(call):
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
+@bot.message_handler(commands=['curses'])
+def curses(message):
+    """
+    Handles the /curses command and returns all available curses
+    in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/curses':
+        # Get wrong command message
+        reply = controller.get_reply("/curses", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_curses()
+        header = controller.get_reply("/curses", "header")
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown",
+            reply_markup=markup.markup_curses(reply))
+
+
+@bot.callback_query_handler(lambda call: '/curse' in call.data)
+def curse_content(call):
+    """
+    Handles callback queries for retrieving specific content from a curse.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.get_curse(call.data.replace('/curse ', ''))
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
 bot.polling()
