@@ -83,7 +83,8 @@ def pickups(message):
         header = controller.get_reply("/pickups", "header")
         bot.send_message(
             message.chat.id, text=header,
-            parse_mode="Markdown", reply_markup=markup.markup_pickups(reply))
+            parse_mode="Markdown",
+            reply_markup=markup.markup_entity('pickup', reply))
 
 
 @bot.callback_query_handler(lambda call: '/pickup' in call.data)
@@ -118,7 +119,8 @@ def runes(message):
         header = controller.get_reply("/runes", "header")
         bot.send_message(
             message.chat.id, text=header,
-            parse_mode="Markdown", reply_markup=markup.markup_runes(reply))
+            parse_mode="Markdown",
+            reply_markup=markup.markup_entity('rune', reply))
 
 
 @bot.callback_query_handler(lambda call: '/rune' in call.data)
@@ -155,7 +157,7 @@ def soulstones(message):
         bot.send_message(
             message.chat.id, text=header,
             parse_mode="Markdown",
-            reply_markup=markup.markup_soulstones(reply))
+            reply_markup=markup.markup_entity('soulstone', reply))
 
 
 @bot.callback_query_handler(lambda call: '/soulstone' in call.data)
@@ -191,7 +193,7 @@ def cards(message):
         bot.send_message(
             message.chat.id, text=header,
             parse_mode="Markdown",
-            reply_markup=markup.markup_decks(reply))
+            reply_markup=markup.markup_entity('deck', reply))
 
 
 @bot.callback_query_handler(lambda call: '/deck' in call.data)
@@ -210,7 +212,7 @@ def deck_content(call):
     bot.send_message(
             call.message.chat.id, text=header,
             parse_mode="Markdown",
-            reply_markup=markup.markup_cards(reply))
+            reply_markup=markup.markup_entity('card', reply))
 
 
 @bot.callback_query_handler(lambda call: '/card' in call.data)
@@ -247,7 +249,7 @@ def curses(message):
         bot.send_message(
             message.chat.id, text=header,
             parse_mode="Markdown",
-            reply_markup=markup.markup_curses(reply))
+            reply_markup=markup.markup_entity('curse', reply))
 
 
 @bot.callback_query_handler(lambda call: '/curse' in call.data)
@@ -284,7 +286,7 @@ def pills(message):
         bot.send_message(
             message.chat.id, text=header,
             parse_mode="Markdown",
-            reply_markup=markup.markup_pills(reply))
+            reply_markup=markup.markup_entity('pill', reply))
 
 
 @bot.callback_query_handler(lambda call: '/pill' in call.data)
@@ -321,7 +323,7 @@ def transformations(message):
         bot.send_message(
             message.chat.id, text=header,
             parse_mode="Markdown",
-            reply_markup=markup.markup_transformations(reply))
+            reply_markup=markup.markup_entity('transformation', reply))
 
 
 @bot.callback_query_handler(lambda call: '/transformation' in call.data)
