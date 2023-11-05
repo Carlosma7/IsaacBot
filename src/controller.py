@@ -12,6 +12,7 @@ import pymongo
 from dotenv import load_dotenv
 
 from achievements import Achievement
+from cards import Card
 from pickups import Pickup
 from runes import Rune
 from soulstones import SoulStone
@@ -133,6 +134,43 @@ class Controller:
         """
         soulstone = SoulStone(name)
         result = soulstone.get_soulstone(database)
+        return result
+
+    def get_list_decks(self):
+        """
+        Get a list of available decks from the database.
+
+        Returns:
+            list: A list of deck names from the database.
+        """
+        card = Card('LIST')
+        decks = card.get_list_decks(database)
+        return decks
+
+    def get_list_cards_in_deck(self, deck):
+        """
+        Get a list of available cards from the database.
+
+        Returns:
+            list: A list of card names from the database.
+        """
+        card = Card('LIST')
+        cards = card.get_list_cards_in_deck(database, deck)
+        return cards
+
+    def get_card(self, name):
+        """
+        Get detailed information about a specific card.
+
+        Args:
+        name (str): The name of the card to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            card.
+        """
+        card = Card(name)
+        result = card.get_card(database)
         return result
 
     def get_reply(self, command, reply_type):

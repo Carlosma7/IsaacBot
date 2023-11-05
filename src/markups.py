@@ -83,3 +83,45 @@ class Markup:
             markup.add(button)
 
         return markup
+
+    @staticmethod
+    def markup_decks(decks):
+        """
+        Create a markup for choosing decks of cards.
+
+        Args:
+            decks (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for deck in decks:
+            button = telebot.types.InlineKeyboardButton(
+                deck, callback_data=f"/deck {deck}")
+            markup.add(button)
+
+        return markup
+
+    @staticmethod
+    def markup_cards(cards):
+        """
+        Create a markup for choosing cards.
+
+        Args:
+            cards (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for card in cards:
+            button = telebot.types.InlineKeyboardButton(
+                card, callback_data=f"/card {card}")
+            markup.add(button)
+
+        return markup

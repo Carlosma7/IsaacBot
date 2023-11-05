@@ -173,4 +173,59 @@ def soulstone_content(call):
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
+@bot.message_handler(commands=['cards'])
+def cards(message):
+    """
+    Handles the /cards command and returns all available cards in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/cards':
+        # Get wrong command message
+        reply = controller.get_reply("/cards", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_decks()
+        header = controller.get_reply("/cards", "header")
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown",
+            reply_markup=markup.markup_decks(reply))
+
+
+@bot.callback_query_handler(lambda call: '/deck' in call.data)
+def deck_content(call):
+    """
+    Handles callback queries for retrieving specific content from a deck.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    reply = controller.get_list_cards_in_deck(call.data.replace('/deck ', ''))
+    header = f"*{call.data.replace('/deck ', '')}* deck."
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(
+            call.message.chat.id, text=header,
+            parse_mode="Markdown",
+            reply_markup=markup.markup_cards(reply))
+
+
+@bot.callback_query_handler(lambda call: '/card' in call.data)
+def card_content(call):
+    """
+    Handles callback queries for retrieving specific content from a card.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.get_card(call.data.replace('/card ', ''))
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
 bot.polling()
