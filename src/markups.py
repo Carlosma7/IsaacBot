@@ -146,3 +146,24 @@ class Markup:
             markup.add(button)
 
         return markup
+
+    @staticmethod
+    def markup_pills(pills):
+        """
+        Create a markup for choosing pills.
+
+        Args:
+            pills (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for pill in pills:
+            button = telebot.types.InlineKeyboardButton(
+                pill, callback_data=f"/pill {pill}")
+            markup.add(button)
+
+        return markup

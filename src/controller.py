@@ -19,6 +19,7 @@ from achievements import Achievement
 from cards import Card
 from curses import Curse
 from pickups import Pickup
+from pills import Pill
 from runes import Rune
 from soulstones import SoulStone
 
@@ -202,6 +203,32 @@ class Controller:
         """
         curse = Curse(name)
         result = curse.get_curse(database)
+        return result
+
+    def get_list_pills(self):
+        """
+        Get a list of available pills from the database.
+
+        Returns:
+            list: A list of pill names from the database.
+        """
+        pill = Pill('LIST')
+        pills = pill.get_list_pills(database)
+        return pills
+
+    def get_pill(self, name):
+        """
+        Get detailed information about a specific pill.
+
+        Args:
+        name (str): The name of the pill to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            pill.
+        """
+        pill = Pill(name)
+        result = pill.get_pill(database)
         return result
 
     def get_reply(self, command, reply_type):
