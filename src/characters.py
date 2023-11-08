@@ -61,7 +61,7 @@ class Character:
                 Character.get_dict_values('Pickups', character.get('pickups'),
                                           database))
 
-    # Add items
+        # Add items
         if character.get('items'):
             item_values.append(
                 Character.get_list_values('Items', character.get('items')))
