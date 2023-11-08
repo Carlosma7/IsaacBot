@@ -66,7 +66,7 @@ class Achievement:
         number = int(self.__number)
         return 1 <= number <= 637
 
-    def get_achievement(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the achievement if it exists.
 

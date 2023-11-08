@@ -54,7 +54,7 @@ class Card:
 
         return "\n\n".join(item_values)
 
-    def get_list_decks(self, database):
+    def get_list_elements(self, database, deck=False):
         """
         Retrieve a list of unique 'deck' values from the provided database.
 
@@ -64,6 +64,10 @@ class Card:
         Returns:
             list: A list of unique 'deck' values found in the collection.
         """
+        if deck:
+            cards = database.Cards.find({'deck': deck})
+            return [card.get('name') for card in cards]
+
         cards = database.Cards.find({})
         decks = OrderedDict()
         for card in cards:
@@ -73,21 +77,7 @@ class Card:
 
         return list(decks.keys())
 
-    def get_list_cards_in_deck(self, database, deck):
-        """
-        Retrieve a list of card names in a deck from the provided database.
-
-        Args:
-            database: A database object with a Cards collection.
-
-        Returns:
-            A list of cards names in a deck extracted from the Cards collection
-            in the database.
-        """
-        cards = database.Cards.find({'deck': deck})
-        return [card.get('name') for card in cards]
-
-    def get_card(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the card.
 

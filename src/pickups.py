@@ -52,7 +52,7 @@ class Pickup:
 
         return "\n\n".join(item_values)
 
-    def get_list_pickups(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of pickup names from the provided database.
 
@@ -66,7 +66,7 @@ class Pickup:
         pickups = database.Pickups.find({})
         return [pickup.get('name') for pickup in pickups]
 
-    def get_pickup(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the pickup.
 

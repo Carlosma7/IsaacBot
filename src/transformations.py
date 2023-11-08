@@ -70,7 +70,7 @@ class Transformation:
 
         return content
 
-    def get_list_transformations(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of transformation names from the provided database.
 
@@ -86,7 +86,7 @@ class Transformation:
             transformation.get('name') for transformation in transformations
         ]
 
-    def get_transformation(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the transformation.
 

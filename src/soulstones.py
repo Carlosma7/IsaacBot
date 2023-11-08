@@ -52,7 +52,7 @@ class SoulStone:
 
         return "\n\n".join(item_values)
 
-    def get_list_soulstones(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of soul stone names from the provided database.
 
@@ -66,7 +66,7 @@ class SoulStone:
         soulstones = database.SoulStones.find({})
         return [soulstone.get('name') for soulstone in soulstones]
 
-    def get_soulstone(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the soulstone.
 

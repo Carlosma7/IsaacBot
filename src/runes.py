@@ -52,7 +52,7 @@ class Rune:
 
         return "\n\n".join(item_values)
 
-    def get_list_runes(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of rune names from the provided database.
 
@@ -66,7 +66,7 @@ class Rune:
         runes = database.Runes.find({})
         return [rune.get('name') for rune in runes]
 
-    def get_rune(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the rune.
 

@@ -62,7 +62,7 @@ def achievement(message):
         reply = controller.get_reply("/achievement", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_achievement(message.text.split()[1])
+        reply = controller.get_element("achievements", message.text.split()[1])
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
 
 
@@ -79,7 +79,7 @@ def pickups(message):
         reply = controller.get_reply("/pickups", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_pickups()
+        reply = controller.get_list_elements("pickups")
         header = controller.get_reply("/pickups", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -96,7 +96,8 @@ def pickup_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_pickup(call.data.replace('/pickup ', ''))
+    result = controller.get_element(
+        "pickups", call.data.replace('/pickup ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -115,7 +116,7 @@ def runes(message):
         reply = controller.get_reply("/runes", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_runes()
+        reply = controller.get_list_elements("runes")
         header = controller.get_reply("/runes", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -132,7 +133,7 @@ def rune_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_rune(call.data.replace('/rune ', ''))
+    result = controller.get_element("runes", call.data.replace('/rune ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -152,7 +153,7 @@ def soulstones(message):
         reply = controller.get_reply("/soulstones", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_soulstones()
+        reply = controller.get_list_elements("soulstones")
         header = controller.get_reply("/soulstones", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -169,7 +170,8 @@ def soulstone_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_soulstone(call.data.replace('/soulstone ', ''))
+    result = controller.get_element(
+        "soulstones", call.data.replace('/soulstone ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -188,7 +190,7 @@ def cards(message):
         reply = controller.get_reply("/cards", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_decks()
+        reply = controller.get_list_elements("cards")
         header = controller.get_reply("/cards", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -205,7 +207,8 @@ def deck_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    reply = controller.get_list_cards_in_deck(call.data.replace('/deck ', ''))
+    reply = controller.get_list_elements(
+        "cards", call.data.replace('/deck ', ''))
     header = f"*{call.data.replace('/deck ', '')}* deck."
 
     bot.delete_message(call.message.chat.id, call.message.id)
@@ -224,7 +227,7 @@ def card_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_card(call.data.replace('/card ', ''))
+    result = controller.get_element("cards", call.data.replace('/card ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -244,7 +247,7 @@ def curses(message):
         reply = controller.get_reply("/curses", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_curses()
+        reply = controller.get_list_elements("curses")
         header = controller.get_reply("/curses", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -261,7 +264,7 @@ def curse_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_curse(call.data.replace('/curse ', ''))
+    result = controller.get_element("curses", call.data.replace('/curse ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -281,7 +284,7 @@ def pills(message):
         reply = controller.get_reply("/pills", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_pills()
+        reply = controller.get_list_elements("pills")
         header = controller.get_reply("/pills", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -298,7 +301,7 @@ def pill_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_pill(call.data.replace('/pill ', ''))
+    result = controller.get_element("pills", call.data.replace('/pill ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -318,7 +321,7 @@ def transformations(message):
         reply = controller.get_reply("/transformations", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_transformations()
+        reply = controller.get_list_elements("transformations")
         header = controller.get_reply("/transformations", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -336,8 +339,8 @@ def transformation_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_transformation(
-        call.data.replace('/transformation ', ''))
+    result = controller.get_element(
+        "transformations", call.data.replace('/transformation ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -357,7 +360,7 @@ def challenges(message):
         reply = controller.get_reply("/challenges", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_challenges()
+        reply = controller.get_list_elements("challenges")
         header = controller.get_reply("/challenges", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -375,8 +378,8 @@ def challenge_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_challenge(
-        call.data.replace('/challenge ', ''))
+    result = controller.get_element(
+        "challenges", call.data.replace('/challenge ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
@@ -396,7 +399,7 @@ def characters(message):
         reply = controller.get_reply("/characters", "wrong_command")
         bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
     else:
-        reply = controller.get_list_characters()
+        reply = controller.get_list_elements("characters")
         header = controller.get_reply("/characters", "header")
         bot.send_message(
             message.chat.id, text=header,
@@ -414,8 +417,8 @@ def character_content(call):
         call (telebot.types.CallbackQuery): The callback query object from
         Telegram.
     """
-    result = controller.get_character(
-        call.data.replace('/character ', ''))
+    result = controller.get_element(
+        "characters", call.data.replace('/character ', ''))
 
     bot.delete_message(call.message.chat.id, call.message.id)
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")

@@ -49,7 +49,7 @@ class Pill:
 
         return "\n\n".join(item_values)
 
-    def get_list_pills(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of pill names from the provided database.
 
@@ -63,7 +63,7 @@ class Pill:
         pills = database.Pills.find({})
         return [pill.get('name') for pill in pills]
 
-    def get_pill(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the pill.
 

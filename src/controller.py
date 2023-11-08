@@ -11,9 +11,6 @@ Date: 04-Nov-2023
 # still be respected.
 # pylint: disable=C0411
 
-# TO-DO: Remove this disable and refactor whole class.
-# pylint: disable=R0904
-
 import os
 import pymongo
 from dotenv import load_dotenv
@@ -48,271 +45,66 @@ class Controller:
         - get_achievement(number): Retrieves the info of a specific
         achievement.
     """
-
-    def get_achievement(self, number):
+    def __init__(self):
         """
-        Retrieve information about a specific achievement by its number.
+        Initializes an instance of a class with a dictionary that maps element
+        types to their respective classes.
+
+        The `element_types` dictionary associates strings representing
+        different types of in-game elements with their corresponding class
+        definitions. This is useful for managing and organizing various
+        game-related data, such as achievements, pickups, runes, soulstones,
+        decks, curses, pills, transformations, challenges, and characters.
+
+        Parameters:
+        - self: The instance of the class to be initialized.
+        """
+        self.element_types = {
+            'achievements': Achievement,
+            'pickups': Pickup,
+            'runes': Rune,
+            'soulstones': SoulStone,
+            'cards': Card,
+            'curses': Curse,
+            'pills': Pill,
+            'transformations': Transformation,
+            'challenges': Challenge,
+            'characters': Character
+        }
+
+    def get_list_elements(self, elem_type, deck=False):
+        """
+        Get a list of elements of a specified type from the database.
 
         Args:
-            number (int): The unique identifier (number) of the achievement to
-            retrieve.
+            elem_type (str): The type of elements to retrieve.
+            deck (bool, optional): Whether to retrieve elements associated with
+            a deck.
+                Defaults to False.
 
         Returns:
-            str: If a valid achievement with the specified number is found,
-            returns a str containing achievement details. If the achievement
-            number is not valid (outside the range 1 to 637), returns a string
-            indicating that the achievement ID is not valid.
+            list: A list of elements of the specified type.
         """
-        achievement = Achievement(number)
-        result = achievement.get_achievement(database)
-        if result:
-            return result
+        element = self.element_types[elem_type]('List')
+        if deck:
+            elements = element.get_list_elements(database, deck)
+            return elements
+        elements = element.get_list_elements(database)
+        return elements
 
-        return "Achievement ID is not valid, achievement ID must be between " \
-               "1 and 637."
-
-    def get_list_pickups(self):
+    def get_element(self, elem_type, elem_id):
         """
-        Get a list of available pickups from the database.
-
-        Returns:
-            list: A list of pickup names from the database.
-        """
-        pickup = Pickup('LIST')
-        pickups = pickup.get_list_pickups(database)
-        return pickups
-
-    def get_pickup(self, name):
-        """
-        Get detailed information about a specific pickup.
+        Get a specific element of a specified type from the database.
 
         Args:
-        name (str): The name of the pickup to retrieve.
+            elem_type (str): The type of element to retrieve.
+            elem_id: The unique identifier of the element.
 
         Returns:
-            dict: A dictionary containing information about the specified
-            pickup.
+            object: The retrieved element.
         """
-        pickup = Pickup(name)
-        result = pickup.get_pickup(database)
-        return result
-
-    def get_list_runes(self):
-        """
-        Get a list of available runes from the database.
-
-        Returns:
-            list: A list of rune names from the database.
-        """
-        rune = Rune('LIST')
-        runes = rune.get_list_runes(database)
-        return runes
-
-    def get_rune(self, name):
-        """
-        Get detailed information about a specific rune.
-
-        Args:
-        name (str): The name of the rune to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified rune.
-        """
-        rune = Rune(name)
-        result = rune.get_rune(database)
-        return result
-
-    def get_list_soulstones(self):
-        """
-        Get a list of available soul stones from the database.
-
-        Returns:
-            list: A list of soul stone names from the database.
-        """
-        soulstone = SoulStone('LIST')
-        soulstones = soulstone.get_list_soulstones(database)
-        return soulstones
-
-    def get_soulstone(self, name):
-        """
-        Get detailed information about a specific soul stone.
-
-        Args:
-        name (str): The name of the soul stone to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified
-            soul stone.
-        """
-        soulstone = SoulStone(name)
-        result = soulstone.get_soulstone(database)
-        return result
-
-    def get_list_decks(self):
-        """
-        Get a list of available decks from the database.
-
-        Returns:
-            list: A list of deck names from the database.
-        """
-        card = Card('LIST')
-        decks = card.get_list_decks(database)
-        return decks
-
-    def get_list_cards_in_deck(self, deck):
-        """
-        Get a list of available cards from the database.
-
-        Returns:
-            list: A list of card names from the database.
-        """
-        card = Card('LIST')
-        cards = card.get_list_cards_in_deck(database, deck)
-        return cards
-
-    def get_card(self, name):
-        """
-        Get detailed information about a specific card.
-
-        Args:
-        name (str): The name of the card to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified
-            card.
-        """
-        card = Card(name)
-        result = card.get_card(database)
-        return result
-
-    def get_list_curses(self):
-        """
-        Get a list of available curses from the database.
-
-        Returns:
-            list: A list of curse names from the database.
-        """
-        curse = Curse('LIST')
-        curses = curse.get_list_curses(database)
-        return curses
-
-    def get_curse(self, name):
-        """
-        Get detailed information about a specific curse.
-
-        Args:
-        name (str): The name of the curse to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified
-            curse.
-        """
-        curse = Curse(name)
-        result = curse.get_curse(database)
-        return result
-
-    def get_list_pills(self):
-        """
-        Get a list of available pills from the database.
-
-        Returns:
-            list: A list of pill names from the database.
-        """
-        pill = Pill('LIST')
-        pills = pill.get_list_pills(database)
-        return pills
-
-    def get_pill(self, name):
-        """
-        Get detailed information about a specific pill.
-
-        Args:
-        name (str): The name of the pill to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified
-            pill.
-        """
-        pill = Pill(name)
-        result = pill.get_pill(database)
-        return result
-
-    def get_list_transformations(self):
-        """
-        Get a list of available transformations from the database.
-
-        Returns:
-            list: A list of transformation names from the database.
-        """
-        transformation = Transformation('LIST')
-        transformations = transformation.get_list_transformations(database)
-        return transformations
-
-    def get_transformation(self, name):
-        """
-        Get detailed information about a specific transformation.
-
-        Args:
-        name (str): The name of the transformation to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified
-            transformation.
-        """
-        transformation = Transformation(name)
-        result = transformation.get_transformation(database)
-        return result
-
-    def get_list_challenges(self):
-        """
-        Get a list of available challenges from the database.
-
-        Returns:
-            list: A list of challenge names from the database.
-        """
-        challenge = Challenge('LIST')
-        challenges = challenge.get_list_challenges(database)
-        return challenges
-
-    def get_challenge(self, name):
-        """
-        Get detailed information about a specific challenge.
-
-        Args:
-        name (str): The name of the challenge to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified
-            challenge.
-        """
-        challenge = Challenge(name)
-        result = challenge.get_challenge(database)
-        return result
-
-    def get_list_characters(self):
-        """
-        Get a list of available characters from the database.
-
-        Returns:
-            list: A list of characters names from the database.
-        """
-        character = Character('LIST')
-        characters = character.get_list_characters(database)
-        return characters
-
-    def get_character(self, name):
-        """
-        Get detailed information about a specific character.
-
-        Args:
-        name (str): The name of the character to retrieve.
-
-        Returns:
-            dict: A dictionary containing information about the specified
-            character.
-        """
-        character = Character(name)
-        result = character.get_character(database)
+        element = self.element_types[elem_type](elem_id)
+        result = element.get_element(database)
         return result
 
     def get_reply(self, command, reply_type):

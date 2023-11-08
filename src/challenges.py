@@ -113,7 +113,7 @@ class Challenge:
                            f"{format_val or value.title()}")
         return "\n".join(content)
 
-    def get_list_challenges(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of challenge names from the provided database.
 
@@ -127,7 +127,7 @@ class Challenge:
         challenges = database.Challenges.find({})
         return [challenge.get('name') for challenge in challenges]
 
-    def get_challenge(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the challenge.
 

@@ -178,7 +178,7 @@ class Character:
                            f"{format_val or value.title()}")
         return "\n".join(content)
 
-    def get_list_characters(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of character names from the provided database.
 
@@ -192,7 +192,7 @@ class Character:
         characters = database.Characters.find({})
         return [character.get('name') for character in characters]
 
-    def get_character(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the character.
 

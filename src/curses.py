@@ -46,7 +46,7 @@ class Curse:
 
         return "\n\n".join(item_values)
 
-    def get_list_curses(self, database):
+    def get_list_elements(self, database):
         """
         Retrieve a list of curse names from the provided database.
 
@@ -60,7 +60,7 @@ class Curse:
         curses = database.Curses.find({})
         return [curse.get('name') for curse in curses]
 
-    def get_curse(self, database):
+    def get_element(self, database):
         """
         Retrieves the description and details of the curse.
 
