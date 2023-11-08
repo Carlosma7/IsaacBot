@@ -102,6 +102,8 @@ class Trinket:
             similarity_ratio = SequenceMatcher(None, query, trinket).ratio()
             if similarity_ratio > 0.5:
                 result_trinkets.append(trinket)
+        if len(result_trinkets) == 0:
+            return False
         return result_trinkets
 
     def get_element(self, database):
