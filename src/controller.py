@@ -25,6 +25,7 @@ from pills import Pill
 from runes import Rune
 from soulstones import SoulStone
 from transformations import Transformation
+from trinkets import Trinket
 
 load_dotenv(dotenv_path='.env')
 
@@ -125,3 +126,48 @@ class Controller:
             "type": reply_type,
             })
         return reply.get('message').encode('utf-8').decode('unicode_escape')
+
+    def search_element(self, query, exact=False):
+        """
+        Searches for the given query among different game elements and returns
+        the corresponding
+        information if found.
+
+        Args:
+            query (str): The query to search for.
+            exact (bool): Flag indicating whether an exact match is required.
+            (default: False)
+
+        Returns:
+            tuple: A tuple containing the result information (dict) and the
+            type of game element (str) if found. If no match is found, it
+            returns a tuple containing all the search results and the type
+            'Similar'.
+        """
+
+        # Check if query is a trinket
+        trinket = Trinket(query)
+        result = trinket.get_list_elements(database, query, exact)
+        if isinstance(result, str):
+            return trinket.get_element(database)
+        return result
+
+    def get_element_section(self, section, element):
+        """
+        Retrieves a specific section of information for a given game element.
+
+        Args:
+            section (str): The section to retrieve info.
+            element (str): The element to be inspected.
+
+        Returns:
+            str: The requested section of information for the specified game
+            element.
+        """
+
+        trinket = Trinket(element)
+        result = trinket.get_list_elements(database, element, True)
+        if isinstance(result, str):
+            result = trinket.get_element_section(database, section)
+            return result
+        return f"No information was found for section *{section}*."

@@ -46,3 +46,53 @@ class Markup:
             markup.add(button)
 
         return markup
+
+    @staticmethod
+    def markup_similar(similarities):
+        """
+        Create a markup for choosing similar elements.
+
+        Args:
+            similarities (list): A list of elements to display as buttons.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup: Markup for selecting similar
+            elements.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+
+        for elem in similarities:
+            button = telebot.types.InlineKeyboardButton(
+                elem, callback_data=elem)
+            markup.add(button)
+
+        return markup
+
+    @staticmethod
+    def markup_content(elem):
+        """
+        Create a markup based on the element type.
+
+        Args:
+            elem (str): The name or identifier of the element.
+
+        Returns:
+            telebot.types.InlineKeyboardMarkup or False: Markup for the
+            specified element type,
+            or False if not supported.
+        """
+        markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+
+        bt1 = telebot.types.InlineKeyboardButton(
+            'Effects', callback_data=f"Effects_{elem}")
+        bt2 = telebot.types.InlineKeyboardButton(
+            'Notes', callback_data=f"Notes_{elem}")
+        bt3 = telebot.types.InlineKeyboardButton(
+            'Synergies', callback_data=f"Synergies_{elem}")
+        bt4 = telebot.types.InlineKeyboardButton(
+            'Interactions',
+            callback_data=f"Interactions_{elem}")
+
+        markup.add(bt1, bt2, bt3, bt4)
+
+        return markup

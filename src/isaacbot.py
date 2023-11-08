@@ -424,4 +424,69 @@ def character_content(call):
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
+@bot.message_handler(func=lambda message: True)
+def query(message):
+    """
+    Handles user queries and sends information about game elements.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    result = controller.search_element(message.text, False)
+    if isinstance(result, str):
+        bot.send_message(message.chat.id,
+                         text=result,
+                         parse_mode="Markdown",
+                         reply_markup=markup.markup_content(message.text))
+
+    elif isinstance(result, list):
+        bot.send_message(
+            message.chat.id,
+            f"\"{message.text}\" was not found, but here are some similar"
+            f" possibilities.",
+            reply_markup=markup.markup_similar(result))
+
+    else:
+        bot.send_message(
+            message.chat.id,
+            f"\"{message.text}\" was not found, and there aren't any similar"
+            f" possibilities."
+            )
+
+
+@bot.callback_query_handler(lambda call: '_' in call.data)
+def query_content(call):
+    """
+    Handles callback queries for retrieving specific content sections of game
+    elements.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    section = call.data.split('_')[0]
+    element = call.data.split('_')[1]
+    result = controller.get_element_section(section, element)
+
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
+@bot.callback_query_handler(lambda call: '_' not in call.data)
+def query_similar(call):
+    """
+    Handles callback queries for retrieving information about similar game
+    elements.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.search_element(call.data, True)
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id,
+                     text=result,
+                     parse_mode="Markdown",
+                     reply_markup=markup.markup_content(call.data))
+
+
 bot.polling()
