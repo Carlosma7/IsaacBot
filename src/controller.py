@@ -11,6 +11,9 @@ Date: 04-Nov-2023
 # still be respected.
 # pylint: disable=C0411
 
+# TO-DO: Remove this disable and refactor whole class.
+# pylint: disable=R0904
+
 import os
 import pymongo
 from dotenv import load_dotenv
@@ -18,6 +21,7 @@ from dotenv import load_dotenv
 from achievements import Achievement
 from cards import Card
 from challenges import Challenge
+from characters import Character
 from curses import Curse
 from pickups import Pickup
 from pills import Pill
@@ -283,6 +287,32 @@ class Controller:
         """
         challenge = Challenge(name)
         result = challenge.get_challenge(database)
+        return result
+
+    def get_list_characters(self):
+        """
+        Get a list of available characters from the database.
+
+        Returns:
+            list: A list of characters names from the database.
+        """
+        character = Character('LIST')
+        characters = character.get_list_characters(database)
+        return characters
+
+    def get_character(self, name):
+        """
+        Get detailed information about a specific character.
+
+        Args:
+        name (str): The name of the character to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            character.
+        """
+        character = Character(name)
+        result = character.get_character(database)
         return result
 
     def get_reply(self, command, reply_type):

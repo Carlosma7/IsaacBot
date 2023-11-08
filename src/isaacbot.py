@@ -382,4 +382,43 @@ def challenge_content(call):
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
+@bot.message_handler(commands=['characters'])
+def characters(message):
+    """
+    Handles the /characters command and returns all available
+    characters in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/characters':
+        # Get wrong command message
+        reply = controller.get_reply("/characters", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_characters()
+        header = controller.get_reply("/characters", "header")
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown",
+            reply_markup=markup.markup_entity('character', reply))
+
+
+@bot.callback_query_handler(lambda call: '/character' in call.data)
+def character_content(call):
+    """
+    Handles callback queries for retrieving specific content from a
+    character.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.get_character(
+        call.data.replace('/character ', ''))
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
 bot.polling()
