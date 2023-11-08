@@ -343,4 +343,43 @@ def transformation_content(call):
     bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 
 
+@bot.message_handler(commands=['challenges'])
+def challenges(message):
+    """
+    Handles the /challenges command and returns all available
+    challenges in-game.
+
+    Args:
+        message (telebot.types.Message): The message object from Telegram.
+    """
+    if not message.text == '/challenges':
+        # Get wrong command message
+        reply = controller.get_reply("/challenges", "wrong_command")
+        bot.send_message(message.chat.id, text=reply, parse_mode="Markdown")
+    else:
+        reply = controller.get_list_challenges()
+        header = controller.get_reply("/challenges", "header")
+        bot.send_message(
+            message.chat.id, text=header,
+            parse_mode="Markdown",
+            reply_markup=markup.markup_entity('challenge', reply))
+
+
+@bot.callback_query_handler(lambda call: '/challenge' in call.data)
+def challenge_content(call):
+    """
+    Handles callback queries for retrieving specific content from a
+    challenge.
+
+    Args:
+        call (telebot.types.CallbackQuery): The callback query object from
+        Telegram.
+    """
+    result = controller.get_challenge(
+        call.data.replace('/challenge ', ''))
+
+    bot.delete_message(call.message.chat.id, call.message.id)
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
+
+
 bot.polling()

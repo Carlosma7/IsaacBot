@@ -17,6 +17,7 @@ from dotenv import load_dotenv
 
 from achievements import Achievement
 from cards import Card
+from challenges import Challenge
 from curses import Curse
 from pickups import Pickup
 from pills import Pill
@@ -28,7 +29,7 @@ load_dotenv(dotenv_path='.env')
 
 MONGO_TOKEN = os.getenv('MONGO_TOKEN')
 if not MONGO_TOKEN:
-    MONGO_TOKEN = input('\nPlease enter a valid Telegram Bot Token: ')
+    MONGO_TOKEN = input('\nPlease enter a valid MongoDB Atlas Token: ')
 
 client = pymongo.MongoClient(MONGO_TOKEN, serverSelectionTimeoutMS=2000)
 database = client.Isaac
@@ -256,6 +257,32 @@ class Controller:
         """
         transformation = Transformation(name)
         result = transformation.get_transformation(database)
+        return result
+
+    def get_list_challenges(self):
+        """
+        Get a list of available challenges from the database.
+
+        Returns:
+            list: A list of challenge names from the database.
+        """
+        challenge = Challenge('LIST')
+        challenges = challenge.get_list_challenges(database)
+        return challenges
+
+    def get_challenge(self, name):
+        """
+        Get detailed information about a specific challenge.
+
+        Args:
+        name (str): The name of the challenge to retrieve.
+
+        Returns:
+            dict: A dictionary containing information about the specified
+            challenge.
+        """
+        challenge = Challenge(name)
+        result = challenge.get_challenge(database)
         return result
 
     def get_reply(self, command, reply_type):
