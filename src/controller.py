@@ -25,6 +25,7 @@ from pills import Pill
 from runes import Rune
 from soulstones import SoulStone
 from transformations import Transformation
+from items import Item
 from trinkets import Trinket
 
 load_dotenv(dotenv_path='.env')
@@ -147,9 +148,29 @@ class Controller:
 
         # Check if query is a trinket
         trinket = Trinket(query)
-        result = trinket.get_list_elements(database, query, exact)
-        if isinstance(result, str):
+        item = Item(query)
+        result_trinket = trinket.get_list_elements(database, query, exact)
+        result_item = item.get_list_elements(database, query, exact)
+        if exact:
+            if isinstance(result_trinket, str):
+                result = trinket.get_element(database)
+            if isinstance(result_item, str):
+                result = item.get_element(database)
+            return result
+        result = result_trinket + result_item
+
+        if isinstance(result_trinket, str):
             return trinket.get_element(database)
+        if isinstance(result_item, str):
+            return item.get_element(database)
+        if len(result) == 0:
+            return False
+        if len(result) == 1:
+            if len(result_item) == 0:
+                elem = Trinket(result_trinket[0])
+            else:
+                elem = Item(result_item[0])
+            return elem.get_element(database)
         return result
 
     def get_element_section(self, section, element):
